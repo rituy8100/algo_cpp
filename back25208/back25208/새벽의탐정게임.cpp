@@ -22,8 +22,11 @@ int main(void)
 	//현재 위치
 	int drow, dcol;
 	char c;
+	//이전위치
+	int brow, bcol;
 	//회전값
 	int tr, tc;
+	int gotr, gotc;
 	int flip = 1;
 	int goflip;
 	//이동 횟수
@@ -55,7 +58,7 @@ int main(void)
 		tc= get<3>(q.front());
 		count= get<4>(q.front());
 		flip= get<5>(q.front());
-		cout << drow << dcol << "\n";
+		cout << drow << dcol <<tr<<tc<< "\n";
 		//num[drow][dcol] = flip;
 		count++;
 		q.pop();
@@ -64,15 +67,17 @@ int main(void)
 			{
 				c = arr[drow + i][dcol + j];
 				goflip = flip;
-				if (tr + i == 2)
-					goflip =flip* -1;
-				if (tc + j == 2)
-					goflip *= flip*-1;
+				gotr = tr + i;
+				gotc = tc + j;
+				if (tr + i == 2|| tr + i == -2)
+					goflip =flip* -1,gotr=0,gotc=0;
+				if (tc + j == 2|| tc + j == -2)
+					goflip *= flip*-1, gotr = 0, gotc = 0;
 				if (c == '.')
 				{
-					q.push(make_tuple(drow+i, dcol+j, (tr+i)%2, (tc+j)%2, count,goflip));
+					q.push(make_tuple(drow+i, dcol+j, gotr, gotc, count,goflip));
 				}
-				else if (c == 'R'  && (tr + i) % 2 == 0 && (tc + j) % 2 == 0/* && goflip == 1*/)
+				else if (c == 'R'  && gotr == 0 && gotc == 0 && goflip == 1)
 				{
 					cout << "도착" << goflip;
 					ans = count;
